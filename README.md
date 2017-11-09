@@ -73,3 +73,23 @@ export class LoginComponent {
     }
 }
 ```
+
+## API endpoint
+
+The API endpoint is configurable via the AbstractAuthenticationConfig in the above Setup section.
+It should expect the following JSON request:
+
+```json
+{
+    "username": "some-user",
+    "password": "some-password"
+}
+```
+
+and expects the response to be in the format:
+
+```json
+{
+    "token": "actual.jwt.token"
+}
+```
