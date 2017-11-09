@@ -76,7 +76,7 @@ export class LoginComponent {
 
 ## API endpoint
 
-The API endpoint is configurable via the AbstractAuthenticationConfig in the above Setup section.
+The API endpoint is configurable via the AbstractAuthenticationConfig in the above [Setup](https://github.com/scottasmith/ng-gwt-auth/blob/master/README.md#setup) section.
 It should expect the following JSON request:
 
 ```json
