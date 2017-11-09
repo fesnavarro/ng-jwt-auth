@@ -1,5 +1,7 @@
 # ng-jwt-auth
 
+[![Build Status](https://travis-ci.org/scottasmith/ng-gwt-auth.png?branch=master)](https://travis-ci.org/scottasmith/ng-gwt-auth)
+
 Authentication library to integrate jwt with Angular2 utilizing 'Authorization' header.
 There are several Angular2 guards and an '@angular/common/http' interceptor.
 
