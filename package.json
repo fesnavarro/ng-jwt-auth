@@ -23,7 +23,7 @@
   "scripts": {
     "lint": "tslint 'packages/**/src/**/*.ts'",
     "test:chrome": "karma start --browsers Chrome ./karma.conf.js",
-    "test": "karma start --browsers Firefox --single-run ./karma.conf.js",
+    "test": "karma start --browsers Firefox --single-run --no-auto-watch ./karma.conf.js",
     "prepackagr": "npm run lint && npm run test",
     "packagr": "ng-packagr -p ng-package.json"
   },
