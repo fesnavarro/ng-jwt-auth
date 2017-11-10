@@ -1,11 +1,9 @@
 import { TestBed, inject, async } from '@angular/core/testing';
-import { HTTP_INTERCEPTORS, HttpClient, HttpRequest } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { LocalStorageService } from '../storage/local-storage.service';
 import { AbstractAuthenticationConfig } from '../config';
-import { AuthenticatedGuardService } from './authenticated.guard';
+import { AuthenticatedGuard } from './authenticated.guard';
 import { StorageMock } from '../storage/storage.mock';
 import { createToken } from '../models/mocks';
 
@@ -26,14 +24,14 @@ describe('Guard: Authenticated Guard Service', () => {
             providers: [
                 { provide: AbstractAuthenticationConfig, useClass: AuthenticationConfig },
                 { provide: LocalStorageService, useClass: StorageMock },
-                { provide: AuthenticatedGuardService, useClass: AuthenticatedGuardService },
+                { provide: AuthenticatedGuard, useClass: AuthenticatedGuard },
                 { provide: Router, useValue: routerMock }
             ]
         })
     });
 
     it('#canActivate should return false and navigate to login when no token in storage',
-        async(inject([AuthenticatedGuardService, LocalStorageService], (guard: AuthenticatedGuardService, storage: LocalStorageService) => {
+        async(inject([AuthenticatedGuard, LocalStorageService], (guard: AuthenticatedGuard, storage: LocalStorageService) => {
             expect(guard.canActivate(<any>{}, <any>{ url: 'some-url' })).toBe(false);
             expect(routerMock.navigateByUrl).toHaveBeenCalledWith('/user/login');
             expect(storage.getLoginRedirect()).toEqual('/some-url')
@@ -41,7 +39,7 @@ describe('Guard: Authenticated Guard Service', () => {
     ));
 
     it('#canActivate should return false and navigate to login when token is in storage but expired',
-        async(inject([AuthenticatedGuardService, LocalStorageService], (guard: AuthenticatedGuardService, storage: LocalStorageService) => {
+        async(inject([AuthenticatedGuard, LocalStorageService], (guard: AuthenticatedGuard, storage: LocalStorageService) => {
             storage.setToken(createToken(true));
 
             expect(guard.canActivate(<any>{}, <any>{ url: 'some-url' })).toBe(false);
@@ -51,7 +49,7 @@ describe('Guard: Authenticated Guard Service', () => {
     ));
 
     it('#canActivate should return true when valid token in storage',
-        async(inject([AuthenticatedGuardService, LocalStorageService], (guard: AuthenticatedGuardService, storage: LocalStorageService) => {
+        async(inject([AuthenticatedGuard, LocalStorageService], (guard: AuthenticatedGuard, storage: LocalStorageService) => {
             storage.setToken(createToken(false));
 
             expect(guard.canActivate(<any>{}, <any>{ url: 'some-url' })).toBe(true);
@@ -61,7 +59,7 @@ describe('Guard: Authenticated Guard Service', () => {
     ));
 
     it('#canActivateChild should return false and navigate to login when no token in storage',
-        async(inject([AuthenticatedGuardService, LocalStorageService], (guard: AuthenticatedGuardService, storage: LocalStorageService) => {
+        async(inject([AuthenticatedGuard, LocalStorageService], (guard: AuthenticatedGuard, storage: LocalStorageService) => {
             expect(guard.canActivateChild(<any>{}, <any>{ url: 'some-url' })).toBe(false);
             expect(routerMock.navigateByUrl).toHaveBeenCalledWith('/user/login');
             expect(storage.getLoginRedirect()).toEqual('/some-url')
@@ -69,7 +67,7 @@ describe('Guard: Authenticated Guard Service', () => {
     ));
 
     it('#canActivateChild should return false and navigate to login when token is in storage but expired',
-        async(inject([AuthenticatedGuardService, LocalStorageService], (guard: AuthenticatedGuardService, storage: LocalStorageService) => {
+        async(inject([AuthenticatedGuard, LocalStorageService], (guard: AuthenticatedGuard, storage: LocalStorageService) => {
             storage.setToken(createToken(true));
 
             expect(guard.canActivateChild(<any>{}, <any>{ url: 'some-url' })).toBe(false);
@@ -79,7 +77,7 @@ describe('Guard: Authenticated Guard Service', () => {
     ));
 
     it('#canActivateChild should return true when valid token in storage',
-        async(inject([AuthenticatedGuardService, LocalStorageService], (guard: AuthenticatedGuardService, storage: LocalStorageService) => {
+        async(inject([AuthenticatedGuard, LocalStorageService], (guard: AuthenticatedGuard, storage: LocalStorageService) => {
             storage.setToken(createToken(false));
 
             expect(guard.canActivateChild(<any>{}, <any>{ url: 'some-url' })).toBe(true);
@@ -89,7 +87,7 @@ describe('Guard: Authenticated Guard Service', () => {
     ));
 
     it('#canLoad should return false and navigate to login when no token in storage',
-        async(inject([AuthenticatedGuardService, LocalStorageService], (guard: AuthenticatedGuardService, storage: LocalStorageService) => {
+        async(inject([AuthenticatedGuard, LocalStorageService], (guard: AuthenticatedGuard, storage: LocalStorageService) => {
             expect(guard.canLoad(<any>{ path: 'some-url' })).toBe(false);
             expect(routerMock.navigateByUrl).toHaveBeenCalledWith('/user/login');
             expect(storage.getLoginRedirect()).toEqual('/some-url')
@@ -97,7 +95,7 @@ describe('Guard: Authenticated Guard Service', () => {
     ));
 
     it('#canLoad should return false and navigate to login when token is in storage but expired',
-        async(inject([AuthenticatedGuardService, LocalStorageService], (guard: AuthenticatedGuardService, storage: LocalStorageService) => {
+        async(inject([AuthenticatedGuard, LocalStorageService], (guard: AuthenticatedGuard, storage: LocalStorageService) => {
             storage.setToken(createToken(true));
 
             expect(guard.canLoad(<any>{ path: 'some-url' })).toBe(false);
@@ -107,7 +105,7 @@ describe('Guard: Authenticated Guard Service', () => {
     ));
 
     it('#canLoad should return true when valid token in storage',
-        async(inject([AuthenticatedGuardService, LocalStorageService], (guard: AuthenticatedGuardService, storage: LocalStorageService) => {
+        async(inject([AuthenticatedGuard, LocalStorageService], (guard: AuthenticatedGuard, storage: LocalStorageService) => {
             storage.setToken(createToken(false));
 
             expect(guard.canLoad(<any>{ path: 'some-url' })).toBe(true);

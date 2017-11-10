@@ -6,8 +6,21 @@ import { AbstractAuthenticationConfig } from '../config';
 import { IToken } from '../models/token.interface';
 import { IUser } from '../models/user.interface';
 
+/**
+ * @name AuthorizedGuard
+ * @throws Error
+ * @example
+ *
+ * const routes: Routes = [{
+ *      path: '',
+ *      component: AppComponent,
+ *      canActivate: [AuthorizedGuard],
+ *      canActivateChild: [AuthorizedGuard],
+ *      children: [{ ... }]
+ *  }];
+ */
 @Injectable()
-export class PrivilegeGuardService implements CanActivate, CanActivateChild, CanLoad {
+export class AuthorizedGuard implements CanActivate, CanActivateChild, CanLoad {
     private _redirectUrl: string;
 
     constructor(
@@ -23,7 +36,7 @@ export class PrivilegeGuardService implements CanActivate, CanActivateChild, Can
             return true;
         }
 
-        return this.checkPrivileges(route.data['privileges'] as string[], `/${state.url}`);
+        return this._checkPrivileges(route.data['privileges'] as string[], `/${state.url}`);
     }
 
     canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
@@ -35,10 +48,10 @@ export class PrivilegeGuardService implements CanActivate, CanActivateChild, Can
             return true;
         }
 
-        return this.checkPrivileges(route.data['privileges'] as string[], `/${route.path}`);
+        return this._checkPrivileges(route.data['privileges'] as string[], `/${route.path}`);
     }
 
-    checkPrivileges(privileges: string[], url: string): boolean {
+    private _checkPrivileges(privileges: string[], url: string): boolean {
         let token: IToken = this._storage.getToken();
         if (!token || token.isExpired()) {
             this._storage.setLoginRedirect(url);
@@ -55,10 +68,6 @@ export class PrivilegeGuardService implements CanActivate, CanActivateChild, Can
     }
 
     private _haveRouteAccess(privileges: string[]): Boolean {
-        if (!privileges || !(privileges instanceof Array)) {
-            return false;
-        }
-
         let user: IUser = this._storage.getToken().user;
         let devFeature: boolean = false;
         let foundPrivilege: string = null;

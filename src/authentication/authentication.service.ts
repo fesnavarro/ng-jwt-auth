@@ -1,12 +1,14 @@
 import { Injectable, Inject } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 
 import { LocalStorageService } from '../storage/local-storage.service';
 import { Jwt } from '../helpers/jwt';
 import { ICredentials, IAuthResponse } from '../models/authentication.interfaces';
 import { IToken } from '../models/token.interface';
+import { IUser } from '../models/user.interface';
 import { AbstractAuthenticationConfig } from '../config';
 
 @Injectable()
@@ -62,6 +64,14 @@ export class AuthenticationService {
             return true;
         }
         return false;
+    }
+
+    public getUser(): IUser {
+        let token: IToken = this._storage.getToken();
+        if (!token || token.isExpired()) {
+            return null;
+        }
+        return token.user;
     }
 
     public setRedirectUrl(url: string): void {

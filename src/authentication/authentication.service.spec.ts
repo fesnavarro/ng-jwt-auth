@@ -1,10 +1,11 @@
 import { TestBed, async, inject } from '@angular/core/testing';
-import { HttpClientModule, HttpClient, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpRequest } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { AuthenticationService } from './authentication.service';
 import { LocalStorageService } from '../storage/local-storage.service';
 import { IToken } from '../models/token.interface';
+import { User } from '../models/user';
 import { Token } from '../models/token';
 import { AbstractAuthenticationConfig } from '../config';
 import { ICredentials } from '../models/authentication.interfaces';
@@ -22,8 +23,7 @@ describe('Authentication: Authentication Service', () => {
 
     beforeEach(() => TestBed.configureTestingModule({
         imports: [
-            HttpClientTestingModule,
-            HttpClientModule
+            HttpClientTestingModule
         ],
         providers: [
             AuthenticationService,
@@ -133,6 +133,28 @@ describe('Authentication: Authentication Service', () => {
         inject([AuthenticationService, LocalStorageService], (authService: AuthenticationService, storage: LocalStorageService) => {
             storage.clearToken();
             expect(authService.isAuthenticated()).toBe(false);
+        })
+    );
+
+    it('#getUser returns null when no token on storage',
+        inject([AuthenticationService, LocalStorageService], (authService: AuthenticationService, storage: LocalStorageService) => {
+            expect(authService.getUser()).toBe(null);
+        })
+    );
+
+    it('#getUser returns null when token on storage is expired',
+        inject([AuthenticationService, LocalStorageService], (authService: AuthenticationService, storage: LocalStorageService) => {
+            storage.setToken(createToken(true));
+            expect(authService.getUser()).toBe(null);
+        })
+    );
+
+    it('#getUser returns instance of IUser when token avaiable on storage',
+        inject([AuthenticationService, LocalStorageService], (authService: AuthenticationService, storage: LocalStorageService) => {
+            storage.setToken(createToken(false));
+            let user = authService.getUser();
+            expect(user instanceof User).toBe(true);
+            expect(user.name).toEqual('Some Users Name');
         })
     );
 
