@@ -5,8 +5,21 @@ import { LocalStorageService } from '../storage/local-storage.service';
 import { AbstractAuthenticationConfig } from '../config';
 import { IToken } from '../models/token.interface';
 
+/**
+ * @name AuthenticatedGuard
+ * @throws Error
+ * @example
+ *
+ * const routes: Routes = [{
+ *      path: '',
+ *      component: AppComponent,
+ *      canActivate: [AuthenticatedGuard],
+ *      canActivateChild: [AuthenticatedGuard],
+ *      children: [{ ... }]
+ *  }];
+ */
 @Injectable()
-export class AuthenticatedGuardService implements CanActivate, CanActivateChild, CanLoad {
+export class AuthenticatedGuard implements CanActivate, CanActivateChild, CanLoad {
     private _redirectUrl: string;
 
     constructor(
@@ -18,7 +31,7 @@ export class AuthenticatedGuardService implements CanActivate, CanActivateChild,
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-        return this.checkLogin(`/${state.url}`);
+        return this._checkLogin(`/${state.url}`);
     }
 
     canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
@@ -26,10 +39,10 @@ export class AuthenticatedGuardService implements CanActivate, CanActivateChild,
     }
 
     canLoad(route: Route): boolean {
-        return this.checkLogin(`/${route.path}`);
+        return this._checkLogin(`/${route.path}`);
     }
 
-    checkLogin(url: string): boolean {
+    private _checkLogin(url: string): boolean {
         let token: IToken = this._storage.getToken();
         if (token && !token.isExpired()) {
             return true;

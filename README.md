@@ -24,6 +24,7 @@ import { NgJwtAuthModule, AbstractAuthenticationConfig } from '@scomith/ng-jwt-a
 export class AuthenticationConfig extends AbstractAuthenticationConfig {
     apiLoginUrl = 'api/authenticate/endpoint';
     loginRedirectUrl = '/user/login';
+    heartbeatUrl = '/ping';
 }
 
 @NgModule({
@@ -45,6 +46,8 @@ The authentication endpoint accepts `ICredentials`:
 ```typescript
 import { Component } from '@angular/core';
 import { ICredentials, IToken, AuthenticationService } from '@scomith/ng-jwt-auth';
+
+// Login Component on AbstractAuthenticationConfig.loginRedirectUrl
 
 @Component({...})
 export class LoginComponent {
@@ -76,7 +79,7 @@ export class LoginComponent {
 
 ## API endpoint
 
-The API endpoint is configurable via the AbstractAuthenticationConfig in the above [Setup](https://github.com/scottasmith/ng-gwt-auth/blob/master/README.md#setup) section.
+The API endpoint is configurable via the AbstractAuthenticationConfig in the [Setup](https://github.com/scottasmith/ng-gwt-auth/blob/master/README.md#setup) section.
 It should expect the following JSON request:
 
 ```json
@@ -92,4 +95,26 @@ and expects the response to be in the format:
 {
     "token": "actual.jwt.token"
 }
+```
+
+# Heartbeat Guard
+
+The heartbeat guard can be added to routes to send a ping to the API to get a refresh token.
+To use the hearbeat guard you must set the ```heartbeatUrl``` on ```AbstractAuthenticationConfig``` in the [Setup](https://github.com/scottasmith/ng-gwt-auth/blob/master/README.md#setup) section.
+
+Then you can add it to the routes:
+```typescript
+const appRoutes: Routes = [
+    {
+        path: '',
+        component: AppComponent,
+        canActivate: [HearbeatGuard],
+        canActivateChild: [HearbeatGuard],
+        children: [
+            {
+                // ...
+            }
+        ]
+    }
+];
 ```

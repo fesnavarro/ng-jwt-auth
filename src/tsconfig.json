@@ -1,5 +1,4 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
     "module": "commonjs",
     "sourceMap": true,
@@ -15,5 +14,8 @@
       "es2017",
       "dom"
     ]
+  },
+  "awesomeTypeScriptLoaderOptions": {
+    "useWebpackText": true
   }
 }

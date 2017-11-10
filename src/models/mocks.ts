@@ -4,7 +4,7 @@ import { Base64 } from '../helpers/base64';
 import { IRawToken } from './raw-token.interface';
 import { Token } from './token';
 
-function createJwtRawToken(rawToken: IRawToken): any {
+export function createJwtRawToken(rawToken: IRawToken): any {
     let token: any = Object.assign({}, rawToken);
 
     token.iat = rawToken.iat.getTime();
@@ -14,7 +14,7 @@ function createJwtRawToken(rawToken: IRawToken): any {
     return token;
 }
 
-function createAuthHeaderWithPayload(jwtRawToken: any): string {
+export function createAuthHeaderWithPayload(jwtRawToken: any): string {
     const payload = JSON.stringify(jwtRawToken);
     return `header.${ Base64.btoa(payload) }.signature`;
 }
