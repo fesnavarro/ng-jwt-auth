@@ -1,6 +1,6 @@
 # ng-jwt-auth
 
-[![Build Status](https://travis-ci.org/scottasmith/ng-gwt-auth.png?branch=master)](https://travis-ci.org/scottasmith/ng-gwt-auth)
+[![Build Status](https://travis-ci.org/scottasmith/ng-jwt-auth.png?branch=master)](https://travis-ci.org/scottasmith/ng-jwt-auth)
 
 Authentication library to integrate jwt with Angular2 utilizing 'Authorization' header.
 There are several Angular2 guards and an '@angular/common/http' interceptor.
@@ -12,7 +12,7 @@ This is a [Node.js](https://nodejs.org/en/) module available through the
 [`npm install` command](https://docs.npmjs.com/getting-started/installing-npm-packages-locally):
 
 ```
-$ npm install ng-gwt-auth
+$ npm install ng-jwt-auth
 ```
 
 ## Setup
