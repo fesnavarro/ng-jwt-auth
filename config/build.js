@@ -5,7 +5,6 @@ const chalk = require('chalk');
 
 const PACKAGE = `ng-jwt-auth`;
 const NPM_DIR = `dist`;
-const ESM2015_DIR = `${NPM_DIR}/esm2015`;
 const ESM5_DIR = `${NPM_DIR}/esm5`;
 const BUNDLES_DIR = `${NPM_DIR}/bundles`;
 const OUT_DIR_ESM5 = `${NPM_DIR}/package/esm5`;
@@ -13,7 +12,6 @@ const OUT_DIR_ESM5 = `${NPM_DIR}/package/esm5`;
 shell.echo(`Start building...`);
 
 shell.rm(`-Rf`, `${NPM_DIR}/*`);
-shell.mkdir(`-p`, `./${ESM2015_DIR}`);
 shell.mkdir(`-p`, `./${ESM5_DIR}`);
 shell.mkdir(`-p`, `./${BUNDLES_DIR}`);
 
@@ -34,13 +32,7 @@ shell.echo(chalk.green(`AoT compilation completed`));
 
 /* BUNDLING PACKAGE */
 shell.echo(`Start bundling`);
-shell.echo(`Rollup package`);
-if (shell.exec(`rollup -c config/rollup.es.config.js -i ${NPM_DIR}/${PACKAGE}.js -o ${ESM2015_DIR}/${PACKAGE}.js`).code !== 0) {
-    shell.echo(chalk.red(`Error: Rollup package failed`));
-    shell.exit(1);
-}
-
-shell.echo(`Produce ESM5 version`);
+shell.echo(`ESM5 Rollup package`);
 shell.exec(`ngc -p tsconfig-build.json --target es5 -d false --outDir ${OUT_DIR_ESM5} --importHelpers true --sourceMap`);
 if (shell.exec(`rollup -c config/rollup.es.config.js -i ${OUT_DIR_ESM5}/${PACKAGE}.js -o ${ESM5_DIR}/${PACKAGE}.js`).code !== 0) {
     shell.echo(chalk.red(`Error: ESM5 version failed`));

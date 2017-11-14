@@ -12,7 +12,7 @@ export class AuthenticationConfig extends AbstractAuthenticationConfig {
 }
 
 describe('Guard: Authenticated Guard Service', () => {
-    let routerMock;
+    let routerMock: any;
 
     beforeEach(() => {
         routerMock = {

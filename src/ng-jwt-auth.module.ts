@@ -13,10 +13,6 @@ import { guardServices } from './guards/index';
     imports: [
         RouterModule,
         CommonModule
-    ],
-    providers: [
-        LocalStorageService,
-        windowProvider
     ]
 })
 export class NgJwtAuthModule {
@@ -26,6 +22,8 @@ export class NgJwtAuthModule {
             providers: [
                 AuthenticationService,
                 guardServices,
+                LocalStorageService,
+                windowProvider,
                 { provide: AbstractAuthenticationConfig, useClass: authConfig },
                 { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
             ]
