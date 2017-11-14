@@ -1,5 +1,6 @@
 {
   "compileOnSave": false,
+  "buildOnSave": false,
   "compilerOptions": {
     "module": "commonjs",
     "sourceMap": true,
