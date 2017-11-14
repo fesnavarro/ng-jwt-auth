@@ -59,4 +59,36 @@ describe('Model: User', () => {
     it('#hasRole should return false with no matching role', () => {
         expect(user.hasRole('role2')).toEqual(false);
     });
+
+    it('#haveAccess should return false when no roles available', () => {
+        rawToken = new RawToken();
+        rawToken.roles = undefined;
+        user = User.createFromParsedToken(rawToken);
+
+        expect(user.haveAccess(['role1'])).toEqual(false);
+    });
+
+    it('#haveAccess should return true with matching role', () => {
+        expect(user.haveAccess(['role1'])).toEqual(true);
+    });
+
+    it('#haveAccess should return false with no matching role', () => {
+        expect(user.haveAccess(['role2'])).toEqual(false);
+    });
+
+    it("#haveAccess should return true when user has role 'DEV'", () => {
+        rawToken = new RawToken();
+        rawToken.roles = ['DEV'];
+        user = User.createFromParsedToken(rawToken);
+
+        expect(user.haveAccess(['DEV'])).toEqual(true);
+    });
+
+    it("#haveAccess should return true when user has role 'ADMIN'", () => {
+        rawToken = new RawToken();
+        rawToken.roles = ['ADMIN'];
+        user = User.createFromParsedToken(rawToken);
+
+        expect(user.haveAccess(['role2'])).toEqual(true);
+    });
 });

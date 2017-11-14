@@ -19,7 +19,7 @@ describe('Guard: Anonymous Guard Service', () => {
                 { provide: LocalStorageService, useClass: StorageMock },
                 { provide: AnonymousGuard, useClass: AnonymousGuard }
             ]
-        })
+        });
     });
 
     it('#canActivate should return false if there is a valid token on storage',

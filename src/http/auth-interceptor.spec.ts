@@ -11,7 +11,7 @@ import { jwtTokenString, testToken } from '../models/mocks';
 
 let mockRouter = {
     navigateByUrl: jasmine.createSpy('navigateByUrl')
-}
+};
 
 export class AuthenticationConfig extends AbstractAuthenticationConfig {
     apiLoginUrl = 'api/authenticate/endpoint';
@@ -34,7 +34,9 @@ describe('Http: Auth Interceptor Service', () => {
     }));
 
     it('should not add authorization header to request if no token in storage',
-        async(inject([HttpClient, LocalStorageService, HttpTestingController], (http: HttpClient, storage: LocalStorageService, backend: HttpTestingController) => {
+        async(inject([
+            HttpClient, LocalStorageService, HttpTestingController
+        ], (http: HttpClient, storage: LocalStorageService, backend: HttpTestingController) => {
             http.get('/api').subscribe(response => expect(response).toBeTruthy());
 
             backend
@@ -44,7 +46,9 @@ describe('Http: Auth Interceptor Service', () => {
     ));
 
     it('should add authorization header to request if token in storage',
-        async(inject([HttpClient, LocalStorageService, HttpTestingController], (http: HttpClient, storage: LocalStorageService, backend: HttpTestingController) => {
+        async(inject([
+            HttpClient, LocalStorageService, HttpTestingController
+        ], (http: HttpClient, storage: LocalStorageService, backend: HttpTestingController) => {
             storage.setToken(testToken);
 
             http.get('/api').subscribe(response => expect(response).toBeTruthy());
@@ -59,7 +63,9 @@ describe('Http: Auth Interceptor Service', () => {
     ));
 
     it('should set token on storage if response headers contain authorization',
-        async(inject([HttpClient, LocalStorageService, HttpTestingController], (http: HttpClient, storage: LocalStorageService, backend: HttpTestingController) => {
+        async(inject([
+            HttpClient, LocalStorageService, HttpTestingController
+        ], (http: HttpClient, storage: LocalStorageService, backend: HttpTestingController) => {
 
             http.get('/api', { observe: 'response' }).subscribe(response => {
                 expect(response.headers.has('authorization')).toBeTruthy();
@@ -73,7 +79,9 @@ describe('Http: Auth Interceptor Service', () => {
     ));
 
     it('should redirect to login url when 401 statusCode is returned',
-        async(inject([HttpClient, LocalStorageService, HttpTestingController], (http: HttpClient, storage: LocalStorageService, backend: HttpTestingController) => {
+        async(inject([
+            HttpClient, LocalStorageService, HttpTestingController
+        ], (http: HttpClient, storage: LocalStorageService, backend: HttpTestingController) => {
 
             http.get('/api', { observe: 'response' }).subscribe(response => {}, (err) => {
                 expect(mockRouter.navigateByUrl).toHaveBeenCalledWith('/user/login');

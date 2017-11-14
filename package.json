@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/scottsmith/ng-gwt-auth"
+    "url": "https://github.com/scottsmith/ng-jwt-auth"
   },
   "engines": {
     "node": ">=6.9.5 <7.0.0",
@@ -20,32 +20,48 @@
     "auth",
     "authorization"
   ],
+  "main": "./bundles/ng-jwt-auth.umd.js",
+  "module": "./esm5/ng-jwt-auth.js",
+  "es2015": "./esm2015/ng-jwt-auth.js",
+  "typings": "./ng-jwt-auth.d.ts",
   "scripts": {
     "lint": "tslint 'src/**/*.ts'",
     "test": "karma start --single-run --no-auto-watch --browsers Firefox ./karma.conf.js",
     "test:watch": "karma start --no-single-run --auto-watch --browsers Firefox ./karma.conf.js",
     "test:chrome": "karma start --single-run --no-auto-watch --browsers Chrome ./karma.conf.js",
     "test:chrome:watch": "karma start --no-single-run --auto-watch --browsers Chrome ./karma.conf.js",
-    "build": "ng-packagr -p ng-package.json",
-    "prepublishOnly": "test \"$(basename $PWD)\" = \"dist\" || (echo \"Can't publish outside the dist directory\" && exit 1)"
+    "build": "node config/build.js",
+    "pack-lib": "npm pack ./dist",
+    "prepublish-lib": "npm run build",
+    "publish-lib": "npm publish ./dist",
+    "publish-lib:next": "npm publish --tag next ./dist",
+    "prepublishOnly": "test \"$(basename $PWD)\" = \"dist\" || (echo \"Please use 'npm run publish-lib\" && exit 1)"
   },
-  "peerDependencies": {},
-  "dependencies": {
-    "@angular/common": "^5.0.0",
-    "@angular/compiler": "^5.0.0",
-    "@angular/core": "^5.0.0",
-    "@angular/http": "^5.0.0",
-    "@angular/platform-browser": "^5.0.0",
-    "@angular/platform-browser-dynamic": "^5.0.0",
+  "peerDependencies": {
+    "@angular/common": "^5.0.1",
+    "@angular/compiler": "^5.0.1",
+    "@angular/core": "^5.0.1",
+    "@angular/http": "^5.0.1",
     "@angular/router": "^5.0.0",
-    "core-js": "^2.5.1",
-    "moment": "^2.19.1",
-    "rxjs": "^5.5.2",
-    "zone.js": "^0.8.18"
+    "moment": "^2.19.2",
+    "rxjs": "^5.5.2"
+  },
+  "dependencies": {
+    "@angular/common": "^5.0.1",
+    "@angular/compiler": "^5.0.1",
+    "@angular/core": "^5.0.1",
+    "@angular/http": "^5.0.1",
+    "@angular/router": "^5.0.1",
+    "moment": "^2.19.2",
+    "rxjs": "^5.5.2"
   },
   "devDependencies": {
+    "@angular/cli": "^1.5.0",
+    "@angular/compiler-cli": "^5.0.1",
+    "@angular/platform-browser": "^5.0.1",
+    "@angular/platform-browser-dynamic": "^5.0.1",
     "@types/jasmine": "^2.6.3",
-    "@types/moment": "^2.13.0",
+    "@types/lodash": "^4.14.85",
     "@types/node": "^8.0.49",
     "@types/webpack": "^3.8.0",
     "angular2-template-loader": "^0.6.2",
@@ -65,15 +81,22 @@
     "karma-remap-coverage": "^0.1.4",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^2.0.5",
-    "ng-packagr": "^1.5.0",
+    "rollup": "^0.51.5",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-sourcemaps": "^0.4.2",
     "node-sass": "^4.6.0",
     "raw-loader": "^0.5.1",
     "sass-loader": "^6.0.6",
+    "shelljs": "^0.7.8",
     "source-map-loader": "^0.2.3",
+    "ts-loader": "^3.1.1",
     "to-string-loader": "^1.1.5",
     "tslint": "^5.8.0",
     "tslint-loader": "^3.5.3",
     "typescript": "^2.6.1",
-    "webpack": "^3.8.1"
+    "uglify-js": "^3.1.9",
+    "webpack": "^3.8.1",
+    "zone.js": "^0.8.18",
+    "core-js": "^2.5.1"
   }
 }

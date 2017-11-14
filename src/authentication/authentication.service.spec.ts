@@ -40,7 +40,9 @@ describe('Authentication: Authentication Service', () => {
     }));
 
     it('#attemptLogin throws error when there is an API error',
-        async(inject([AuthenticationService, HttpTestingController], (authService: AuthenticationService, backend: HttpTestingController) => {
+        async(inject([
+            AuthenticationService, HttpTestingController
+        ], (authService: AuthenticationService, backend: HttpTestingController) => {
             let credentials: ICredentials = {username: 'joe.bloggs@gwm-intl.com', password: 'pass'};
 
             authService.attemptLogin(credentials).subscribe((token: IToken) => {}, (err) => {
@@ -58,7 +60,9 @@ describe('Authentication: Authentication Service', () => {
     );
 
     it('#attemptLogin throws error when there is a client/network error',
-        async(inject([AuthenticationService, HttpTestingController], (authService: AuthenticationService, backend: HttpTestingController) => {
+        async(inject([
+            AuthenticationService, HttpTestingController
+        ], (authService: AuthenticationService, backend: HttpTestingController) => {
             let credentials: ICredentials = {username: 'joe.bloggs@gwm-intl.com', password: 'pass'};
 
             authService.attemptLogin(credentials).subscribe((token: IToken) => {}, (err) => {
@@ -72,7 +76,9 @@ describe('Authentication: Authentication Service', () => {
     );
 
     it('#attemptLogin throws error when no token returned',
-        async(inject([AuthenticationService, HttpTestingController], (authService: AuthenticationService, backend: HttpTestingController) => {
+        async(inject([
+            AuthenticationService, HttpTestingController
+        ], (authService: AuthenticationService, backend: HttpTestingController) => {
             let credentials: ICredentials = {username: 'joe.bloggs@gwm-intl.com', password: 'pass'};
 
             authService.attemptLogin(credentials).subscribe((token: IToken) => {}, (err) => {
@@ -86,7 +92,9 @@ describe('Authentication: Authentication Service', () => {
     );
 
     it('#attemptLogin throws error when could not decode token',
-        async(inject([AuthenticationService, HttpTestingController], (authService: AuthenticationService, backend: HttpTestingController) => {
+        async(inject([
+            AuthenticationService, HttpTestingController
+        ], (authService: AuthenticationService, backend: HttpTestingController) => {
             let credentials: ICredentials = {username: 'joe.bloggs@gwm-intl.com', password: 'pass'};
 
             authService.attemptLogin(credentials).subscribe((token: IToken) => {}, (err) => {
@@ -100,7 +108,9 @@ describe('Authentication: Authentication Service', () => {
     );
 
     it('#attemptLogin sets to LocalStorage and returns Token',
-        async(inject([AuthenticationService, LocalStorageService, HttpTestingController], (authService: AuthenticationService, storage: LocalStorageService, backend: HttpTestingController) => {
+        async(inject([
+            AuthenticationService, LocalStorageService, HttpTestingController
+        ], (authService: AuthenticationService, storage: LocalStorageService, backend: HttpTestingController) => {
             let credentials: ICredentials = {username: 'joe.bloggs@gwm-intl.com', password: 'pass'};
 
             authService.attemptLogin(credentials).subscribe((token: IToken) => {
@@ -115,7 +125,9 @@ describe('Authentication: Authentication Service', () => {
     );
 
     it('#logout should call clearToken on storage',
-        inject([AuthenticationService, LocalStorageService], (authService: AuthenticationService, storage: LocalStorageService) => {
+        inject([
+            AuthenticationService, LocalStorageService
+        ], (authService: AuthenticationService, storage: LocalStorageService) => {
             storage.setToken(createToken(false));
             authService.logout();
             expect(storage.getToken()).toBe(null);
@@ -123,34 +135,44 @@ describe('Authentication: Authentication Service', () => {
     );
 
     it('#isAuthenticated to return true when authenticated',
-        inject([AuthenticationService, LocalStorageService], (authService: AuthenticationService, storage: LocalStorageService) => {
+        inject([
+            AuthenticationService, LocalStorageService
+        ], (authService: AuthenticationService, storage: LocalStorageService) => {
             storage.setToken(createToken(false));
             expect(authService.isAuthenticated()).toBe(true);
         })
     );
 
     it('#isAuthenticated to return false when not authenticated',
-        inject([AuthenticationService, LocalStorageService], (authService: AuthenticationService, storage: LocalStorageService) => {
+        inject([
+            AuthenticationService, LocalStorageService
+        ], (authService: AuthenticationService, storage: LocalStorageService) => {
             storage.clearToken();
             expect(authService.isAuthenticated()).toBe(false);
         })
     );
 
     it('#getUser returns null when no token on storage',
-        inject([AuthenticationService, LocalStorageService], (authService: AuthenticationService, storage: LocalStorageService) => {
+        inject([
+            AuthenticationService, LocalStorageService
+        ], (authService: AuthenticationService, storage: LocalStorageService) => {
             expect(authService.getUser()).toBe(null);
         })
     );
 
     it('#getUser returns null when token on storage is expired',
-        inject([AuthenticationService, LocalStorageService], (authService: AuthenticationService, storage: LocalStorageService) => {
+        inject([
+            AuthenticationService, LocalStorageService
+        ], (authService: AuthenticationService, storage: LocalStorageService) => {
             storage.setToken(createToken(true));
             expect(authService.getUser()).toBe(null);
         })
     );
 
     it('#getUser returns instance of IUser when token avaiable on storage',
-        inject([AuthenticationService, LocalStorageService], (authService: AuthenticationService, storage: LocalStorageService) => {
+        inject([
+            AuthenticationService, LocalStorageService
+        ], (authService: AuthenticationService, storage: LocalStorageService) => {
             storage.setToken(createToken(false));
             let user = authService.getUser();
             expect(user instanceof User).toBe(true);
@@ -159,21 +181,27 @@ describe('Authentication: Authentication Service', () => {
     );
 
     it('#setRedirectUrl set redirectUrl on storage',
-        inject([AuthenticationService, LocalStorageService], (authService: AuthenticationService, storage: LocalStorageService) => {
+        inject([
+            AuthenticationService, LocalStorageService
+        ], (authService: AuthenticationService, storage: LocalStorageService) => {
             authService.setRedirectUrl('some-url');
             expect(storage.getLoginRedirect()).toBe('some-url');
         })
     );
 
     it('#getRedirectUrl gets redirectUrl from storage',
-        inject([AuthenticationService, LocalStorageService], (authService: AuthenticationService, storage: LocalStorageService) => {
+        inject([
+            AuthenticationService, LocalStorageService
+        ], (authService: AuthenticationService, storage: LocalStorageService) => {
             storage.setLoginRedirect('some-url');
             expect(authService.getRedirectUrl()).toBe('some-url');
         })
     );
 
     it('#clearRedirectUrl clears redirectUrl on storage',
-        inject([AuthenticationService, LocalStorageService], (authService: AuthenticationService, storage: LocalStorageService) => {
+        inject([
+            AuthenticationService, LocalStorageService
+        ], (authService: AuthenticationService, storage: LocalStorageService) => {
             storage.setLoginRedirect('some-url');
             authService.clearRedirectUrl();
             expect(storage.getLoginRedirect()).toBe(null);

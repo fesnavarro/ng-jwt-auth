@@ -1,5 +1,6 @@
 import { IRawToken } from './raw-token.interface';
 import { IUser } from './user.interface';
+import userHaveAccess from '../helpers/user-have-access';
 
 export class User implements IUser {
     private _userId: number;
@@ -47,5 +48,9 @@ export class User implements IUser {
         });
 
         return haveRole;
+    }
+
+    public haveAccess(roles: string[]): boolean {
+        return userHaveAccess(this, roles);
     }
 }

@@ -1,7 +1,6 @@
 node_modules
-dist
-bundle
-*.sw*
-typings
-npm-debug.log
 coverage
+dist
+*.sw*
+npm-debug.log
+scomith-ng-jwt-auth-*.tgz

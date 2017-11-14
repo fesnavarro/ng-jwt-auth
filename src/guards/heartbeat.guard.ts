@@ -1,6 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { Router, Route, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivate, CanActivateChild, CanLoad } from '@angular/router';
+import {
+    Router,
+    Route,
+    ActivatedRouteSnapshot,
+    RouterStateSnapshot,
+    CanActivate,
+    CanActivateChild,
+    CanLoad
+} from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
 import { LocalStorageService } from '../storage/local-storage.service';
@@ -56,14 +64,14 @@ export class HearbeatGuard implements CanActivate, CanActivateChild, CanLoad {
             throw new Error("Trying to use the 'HeartbeatGuard' with no heartbeatUrl set");
         }
 
-        let token: IToken = this._storage.getToken();
+        let token: IToken | null = this._storage.getToken();
         if (!token || token.isExpired() || !this._heartbeatUrl) {
             return;
         }
 
         this._http.get(this._heartbeatUrl, { observe: 'response' })
             .subscribe((response: HttpResponse<Object>) => {
-                let tokenString: string = response.headers.get('Authorization');
+                let tokenString: string | null = response.headers.get('Authorization');
                 if (tokenString) {
                     this._trySetToken(tokenString);
                 }

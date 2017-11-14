@@ -79,19 +79,8 @@ module.exports = (options) => {
                     use: [
                         {
                             loader: 'awesome-typescript-loader',
-                            query: {
-                                /**
-                                 * Use inline sourcemaps for "karma-remap-coverage" reporter
-                                 */
-                                sourceMap: false,
-                                inlineSourceMap: true,
-                                compilerOptions: {
-                                    /**
-                                     * Remove TypeScript helpers to be injected
-                                     * below by DefinePlugin
-                                     */
-                                    removeComments: true
-                                }
+                            options: {
+                                configFileName: __dirname + '/../tsconfig-test.json'
                             }
                         },
                         'angular2-template-loader'

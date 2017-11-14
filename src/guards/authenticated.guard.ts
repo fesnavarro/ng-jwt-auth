@@ -1,5 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Router, Route, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivate, CanActivateChild, CanLoad } from '@angular/router';
+import {
+    Router,
+    Route,
+    ActivatedRouteSnapshot,
+    RouterStateSnapshot,
+    CanActivate,
+    CanActivateChild,
+    CanLoad
+} from '@angular/router';
 
 import { LocalStorageService } from '../storage/local-storage.service';
 import { AbstractAuthenticationConfig } from '../config';
@@ -43,7 +51,7 @@ export class AuthenticatedGuard implements CanActivate, CanActivateChild, CanLoa
     }
 
     private _checkLogin(url: string): boolean {
-        let token: IToken = this._storage.getToken();
+        let token: IToken | null = this._storage.getToken();
         if (token && !token.isExpired()) {
             return true;
         }

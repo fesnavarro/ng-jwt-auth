@@ -34,7 +34,7 @@ describe('Guard: Hearbeat Guard Service', () => {
                 { provide: HearbeatGuard, useClass: HearbeatGuard },
                 { provide: Router, useValue: routerMock }
             ]
-        })
+        });
     });
 
     afterEach(inject([HttpTestingController], (backend: HttpTestingController) => {
@@ -44,11 +44,11 @@ describe('Guard: Hearbeat Guard Service', () => {
     it('#canActivate throws exception when hearbeatUrl not set',
         async(inject([LocalStorageService, HttpClient, Router],
             (storage: LocalStorageService, http: HttpClient, router: Router) => {
-                let invalidConfig = new (class AuthenticationConfig extends AbstractAuthenticationConfig {
+                let invalidConfig = new (class AuthenticationConfig1 extends AbstractAuthenticationConfig {
                     loginRedirectUrl = '/user/login';
                 });
 
-                let guard = new HearbeatGuard(storage, http, router, invalidConfig)
+                let guard = new HearbeatGuard(storage, http, router, invalidConfig);
                 expect(() => guard.canActivate(<any>{}, <any>{})).toThrow(
                     new Error("Trying to use the 'HeartbeatGuard' with no heartbeatUrl set")
                 );
@@ -57,7 +57,9 @@ describe('Guard: Hearbeat Guard Service', () => {
     ));
 
     it('#canActivate does not send request when no token on storage',
-        async(inject([HearbeatGuard, HttpTestingController], (guard: HearbeatGuard, backend: HttpTestingController) => {
+        async(inject([
+            HearbeatGuard, HttpTestingController
+        ], (guard: HearbeatGuard, backend: HttpTestingController) => {
             expect(guard.canActivate(<any>{}, <any>{})).toEqual(true);
 
             backend.expectNone('/ping');
@@ -120,11 +122,11 @@ describe('Guard: Hearbeat Guard Service', () => {
     it('#canActivateChild throws exception when hearbeatUrl not set',
         async(inject([LocalStorageService, HttpClient, Router],
             (storage: LocalStorageService, http: HttpClient, router: Router) => {
-                let invalidConfig = new (class AuthenticationConfig extends AbstractAuthenticationConfig {
+                let invalidConfig = new (class AuthenticationConfig2 extends AbstractAuthenticationConfig {
                     loginRedirectUrl = '/user/login';
                 });
 
-                let guard = new HearbeatGuard(storage, http, router, invalidConfig)
+                let guard = new HearbeatGuard(storage, http, router, invalidConfig);
                 expect(() => guard.canActivateChild(<any>{}, <any>{})).toThrow(
                     new Error("Trying to use the 'HeartbeatGuard' with no heartbeatUrl set")
                 );
@@ -133,7 +135,9 @@ describe('Guard: Hearbeat Guard Service', () => {
     ));
 
     it('#canActivateChild does not send request when no token on storage',
-        async(inject([HearbeatGuard, HttpTestingController], (guard: HearbeatGuard, backend: HttpTestingController) => {
+        async(inject([
+            HearbeatGuard, HttpTestingController
+        ], (guard: HearbeatGuard, backend: HttpTestingController) => {
             expect(guard.canActivateChild(<any>{}, <any>{})).toEqual(true);
 
             backend.expectNone('/ping');
@@ -200,11 +204,11 @@ describe('Guard: Hearbeat Guard Service', () => {
     it('#canLoad throws exception when hearbeatUrl not set',
         async(inject([LocalStorageService, HttpClient, Router],
             (storage: LocalStorageService, http: HttpClient, router: Router) => {
-                let invalidConfig = new (class AuthenticationConfig extends AbstractAuthenticationConfig {
+                let invalidConfig = new (class AuthenticationConfig3 extends AbstractAuthenticationConfig {
                     loginRedirectUrl = '/user/login';
                 });
 
-                let guard = new HearbeatGuard(storage, http, router, invalidConfig)
+                let guard = new HearbeatGuard(storage, http, router, invalidConfig);
                 expect(() => guard.canLoad(<any>{})).toThrow(
                     new Error("Trying to use the 'HeartbeatGuard' with no heartbeatUrl set")
                 );
@@ -213,7 +217,9 @@ describe('Guard: Hearbeat Guard Service', () => {
     ));
 
     it('#canLoad does not send request when no token on storage',
-        async(inject([HearbeatGuard, HttpTestingController], (guard: HearbeatGuard, backend: HttpTestingController) => {
+        async(inject([
+            HearbeatGuard, HttpTestingController
+        ], (guard: HearbeatGuard, backend: HttpTestingController) => {
             expect(guard.canLoad(<any>{})).toEqual(true);
 
             backend.expectNone('/ping');
