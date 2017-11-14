@@ -4,4 +4,5 @@ export interface IUser {
     roles: string[];
 
     hasRole(roleName: string): boolean;
+    haveAccess(roles: string[]): boolean;
 }

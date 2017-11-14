@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Route, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivate, CanActivateChild, CanLoad } from '@angular/router';
+import {
+    Route,
+    ActivatedRouteSnapshot,
+    RouterStateSnapshot,
+    CanActivate,
+    CanActivateChild,
+    CanLoad
+} from '@angular/router';
 
 import { LocalStorageService } from '../storage/local-storage.service';
 import { IToken } from '../models/token.interface';
@@ -34,7 +41,7 @@ export class AnonymousGuard implements CanActivate, CanActivateChild, CanLoad {
     }
 
     private _shouldAllowRoute(): boolean {
-        let token: IToken = this._storage.getToken();
+        let token: IToken | null = this._storage.getToken();
         if (!token || token.isExpired()) {
             return true;
         }

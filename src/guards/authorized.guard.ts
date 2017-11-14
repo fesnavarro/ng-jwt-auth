@@ -1,5 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Router, Route, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivate, CanActivateChild, CanLoad } from '@angular/router';
+import {
+    Router,
+    Route,
+    ActivatedRouteSnapshot,
+    RouterStateSnapshot,
+    CanActivate,
+    CanActivateChild,
+    CanLoad
+} from '@angular/router';
 
 import { LocalStorageService } from '../storage/local-storage.service';
 import { AbstractAuthenticationConfig } from '../config';
@@ -52,7 +60,7 @@ export class AuthorizedGuard implements CanActivate, CanActivateChild, CanLoad {
     }
 
     private _checkPrivileges(privileges: string[], url: string): boolean {
-        let token: IToken = this._storage.getToken();
+        let token: IToken | null = this._storage.getToken();
         if (!token || token.isExpired()) {
             this._storage.setLoginRedirect(url);
             this._router.navigateByUrl(this._redirectUrl);
@@ -67,28 +75,12 @@ export class AuthorizedGuard implements CanActivate, CanActivateChild, CanLoad {
         return true;
     }
 
-    private _haveRouteAccess(privileges: string[]): Boolean {
-        let user: IUser = this._storage.getToken().user;
-        let devFeature: boolean = false;
-        let foundPrivilege: string = null;
-
-        privileges.forEach((privilege: string) => {
-            if ('DEV' == privilege) {
-                devFeature = true;
-            }
-
-            if (user.hasRole(privilege)) {
-                foundPrivilege = privilege;
-            }
-        });
-
-        if (!foundPrivilege && !devFeature && user.hasRole('ADMIN')) {
-            return true;
-        } else if (foundPrivilege) {
-            return true;
+    private _haveRouteAccess(roles: string[]): boolean {
+        let token: IToken | null = this._storage.getToken();
+        if (!token) {
+            return false;
         }
 
-        return false;
+        return token.user.haveAccess(roles);
     }
-
 }

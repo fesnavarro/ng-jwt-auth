@@ -24,11 +24,11 @@ export class AuthenticationService {
     }
 
     public attemptLogin(credentials: ICredentials): Observable<IToken> {
-        return this._http.post(this._apiLoginUrl, credentials, { observe: 'response' })
+        return this._http.post<IAuthResponse>(this._apiLoginUrl, credentials, { observe: 'response' })
             .map((response: HttpResponse<IAuthResponse>) => {
                 let token: IToken;
 
-                if (!response.body.token) {
+                if (!response.body || !response.body.token) {
                     throw new Error("'attemptLogin' failed: expected token in response");
                 }
 
@@ -50,7 +50,9 @@ export class AuthenticationService {
                     return Observable.throw(`'attemptLogin' failed: '${err.error.message}'`);
                 }
 
-                return Observable.throw(`'attemptLogin' failed: API returned code ${err.status}, body was: '${err.error}'`);
+                return Observable.throw(
+                    `'attemptLogin' failed: API returned code ${err.status}, body was: '${err.error}'`
+                );
             });
     }
 
@@ -59,15 +61,15 @@ export class AuthenticationService {
     }
 
     public isAuthenticated(): boolean {
-        let token: IToken = this._storage.getToken();
+        let token: IToken | null = this._storage.getToken();
         if (token && !token.isExpired()) {
             return true;
         }
         return false;
     }
 
-    public getUser(): IUser {
-        let token: IToken = this._storage.getToken();
+    public getUser(): IUser | null {
+        let token: IToken | null = this._storage.getToken();
         if (!token || token.isExpired()) {
             return null;
         }
@@ -78,7 +80,7 @@ export class AuthenticationService {
         this._storage.setLoginRedirect(url);
     }
 
-    public getRedirectUrl(): string {
+    public getRedirectUrl(): string | null {
         return this._storage.getLoginRedirect();
     }
 

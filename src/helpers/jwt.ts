@@ -5,11 +5,7 @@ import { IRawToken } from '../models/raw-token.interface';
 import { IToken } from '../models/token.interface';
 import { Token } from '../models/token';
 
-export function InvalidTokenError(message) {
-    this.message = message;
-}
-InvalidTokenError.prototype = new Error;
-InvalidTokenError.prototype.name = 'InvalidTokenError';
+export class InvalidTokenError extends Error {}
 
 export class Jwt {
     public static decodeToken(rawToken: string): IToken {

@@ -1,11 +1,7 @@
 // Avoid TS error "cannot find name escape"
 declare var escape: any;
 
-export function InvalidCharacterError(message) {
-    this.message = message;
-}
-InvalidCharacterError.prototype = new Error;
-InvalidCharacterError.prototype.name = 'InvalidCharacterError';
+export class InvalidCharacterError extends Error {}
 
 const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 
@@ -17,11 +13,13 @@ export class Base64 {
 
         for (
             // initialise result and counter
-            let block, charCode, idx = 0, map = chars;
+            let block = 0, charCode, idx = 0, map = chars;
+
             // if the next str index does not exist:
             //   change the mapping table to '='
             //   check if d has no fractional digits
             str.charAt(idx | 0) || (map = '=', idx % 1);
+
             // '8 - idx % 1 * 8' generates the sequence 2, 4, 6, 8
             output += map.charAt(63 & block >> 8 - idx % 1 * 8)
         ) {
@@ -31,6 +29,7 @@ export class Base64 {
                     "'btoa' failed: The string to be encoded contains characters outside of the Latin1 range."
                 );
             }
+
             block = block << 8 | charCode;
         }
 
@@ -47,7 +46,7 @@ export class Base64 {
 
         for (
             // Initiailise result and counters
-            let bc = 0, bs, buffer, idx = 0;
+            let bc = 0, bs = 0, buffer, idx = 0;
 
             // Get next character
             buffer = str.charAt(idx++);

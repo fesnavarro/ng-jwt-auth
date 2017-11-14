@@ -4,18 +4,18 @@ import { Base64 } from '../helpers/base64';
 import { IRawToken } from './raw-token.interface';
 import { Token } from './token';
 
-export function createJwtRawToken(rawToken: IRawToken): any {
-    let token: any = Object.assign({}, rawToken);
+export function createJwtRawToken(_rawToken: IRawToken): any {
+    let token: any = Object.assign({}, _rawToken);
 
-    token.iat = rawToken.iat.getTime();
-    token.nbf = rawToken.nbf.getTime();
-    token.exp = rawToken.exp.getTime();
+    token.iat = _rawToken.iat.getTime();
+    token.nbf = _rawToken.nbf.getTime();
+    token.exp = _rawToken.exp.getTime();
 
     return token;
 }
 
-export function createAuthHeaderWithPayload(jwtRawToken: any): string {
-    const payload = JSON.stringify(jwtRawToken);
+export function createAuthHeaderWithPayload(_jwtRawToken: any): string {
+    const payload = JSON.stringify(_jwtRawToken);
     return `header.${ Base64.btoa(payload) }.signature`;
 }
 
@@ -35,7 +35,7 @@ export const jwtRawToken = createJwtRawToken(rawToken);
 export const jwtTokenString = createAuthHeaderWithPayload(jwtRawToken);
 export const testToken = Token.create(rawToken, createAuthHeaderWithPayload(jwtRawToken));
 
-export function createToken(isExpired: boolean = false, roles: string[] = null): Token {
+export function createToken(isExpired = false, roles: string[] = null): Token {
     let token: any = Object.assign({}, rawToken);
 
     let thisYear: number = (new Date()).getFullYear();
@@ -50,6 +50,5 @@ export function createToken(isExpired: boolean = false, roles: string[] = null):
         token.roles = roles;
     }
 
-    const jwtRawToken = createJwtRawToken(token);
-    return Token.create(token, createAuthHeaderWithPayload(jwtRawToken));
-};
+    return Token.create(token, createAuthHeaderWithPayload(createJwtRawToken(token)));
+}

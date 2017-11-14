@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpEvent,
+    HttpInterceptor,
+    HttpHandler,
+    HttpRequest,
+    HttpResponse,
+    HttpErrorResponse
+} from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 
@@ -22,7 +28,7 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        let token: IToken = this._storage.getToken();
+        let token: IToken | null = this._storage.getToken();
         let rawToken: string;
         let tmpReq: HttpRequest<any> = req;
 
@@ -36,14 +42,18 @@ export class AuthInterceptor implements HttpInterceptor {
         return next.handle(tmpReq).do((event: HttpEvent<any>) => {
             if (event instanceof HttpResponse) {
                 if (event.headers.has('Authorization')) {
-                    let rawToken = event.headers.get('Authorization');
-                    let token: IToken;
+                    let tmpRawToken: string | null = event.headers.get('Authorization');
+                    let tmpToken: IToken;
+
+                    // Could not find header
+                    if (!tmpRawToken) {
+                        return;
+                    }
 
                     try {
-                        token = Jwt.decodeToken(rawToken);
-                        this._storage.setToken(token);
-                    } catch (exc) {
-                    }
+                        tmpToken = Jwt.decodeToken(tmpRawToken);
+                        this._storage.setToken(tmpToken);
+                    } catch (exc) {}
                 }
             }
         }, (err) => {

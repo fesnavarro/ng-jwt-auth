@@ -12,7 +12,7 @@ describe('Storage: Window Storage Mock', () => {
         expect(windowStorage.values.get('test1')).toEqual('test-value1');
     });
 
-    it("#getItem should return null when no item", () => {
+    it('#getItem should return null when no item', () => {
         expect(windowStorage.getItem('test1')).toEqual(null);
     });
 
@@ -27,7 +27,7 @@ describe('Storage: Window Storage Mock', () => {
         expect(windowStorage.values.get('test1')).toEqual(undefined);
     });
 
-    it("#clear should remove all items", () => {
+    it('#clear should remove all items', () => {
         windowStorage.values.set('test1', 'test-value1');
         windowStorage.values.set('test2', 'test-value2');
         windowStorage.clear();

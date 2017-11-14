@@ -8,7 +8,9 @@ export abstract class AbstractAuthenticationConfig {
 
 export const WINDOW = new InjectionToken<Window>('NgJwtAuthWindowToken');
 
-export function _window(): Window {
+export class WindowWrapper extends Window {}
+
+export function _window(): WindowWrapper {
     return window;
 }
 

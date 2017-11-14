@@ -18,15 +18,15 @@ describe('Model: Token', () => {
         expect(token.audience).toEqual('Some Audience');
     });
 
-    it("issued should return ISO with correct date", () => {
+    it('issued should return ISO with correct date', () => {
         expect(token.issuedAt.valueOf()).toEqual(jwtRawToken.iat);
     });
 
-    it("notBeforeDate should return with correct date", () => {
+    it('notBeforeDate should return with correct date', () => {
         expect(token.notBefore.valueOf()).toEqual(jwtRawToken.nbf);
     });
 
-    it("expiry should return ISO with correct date", () => {
+    it('expiry should return ISO with correct date', () => {
         expect(token.expiry.valueOf()).toEqual(jwtRawToken.exp);
     });
 
