@@ -5,3 +5,5 @@ export { User } from './models/user'
 export { AuthenticationService } from './authentication/authentication.service'
 
 export { AbstractAuthenticationConfig } from './config';
+
+export { NgJwtAuthModule } from './ng-jwt-auth.module';
