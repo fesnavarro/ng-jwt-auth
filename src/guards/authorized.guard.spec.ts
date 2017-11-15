@@ -34,7 +34,7 @@ describe('Guard: Authorized Guard Service', () => {
         async(inject([
             AuthorizedGuard, LocalStorageService
         ], (guard: AuthorizedGuard, storage: LocalStorageService) => {
-            expect(guard.canActivate(<any>{}, <any>{ url: 'some-url' })).toBe(true);
+            expect(guard.canActivate(<any>{}, <any>{ url: '/some-url' })).toBe(true);
             expect(routerMock.navigateByUrl).not.toHaveBeenCalledWith('/user/login');
             expect(storage.getLoginRedirect()).not.toEqual('/some-url');
         })
@@ -44,7 +44,7 @@ describe('Guard: Authorized Guard Service', () => {
         async(inject([
             AuthorizedGuard, LocalStorageService
         ], (guard: AuthorizedGuard, storage: LocalStorageService) => {
-            expect(guard.canActivate(<any>{ data: 'some-data' }, <any>{ url: 'some-url' })).toBe(true);
+            expect(guard.canActivate(<any>{ data: 'some-data' }, <any>{ url: '/some-url' })).toBe(true);
             expect(routerMock.navigateByUrl).not.toHaveBeenCalledWith('/user/login');
             expect(storage.getLoginRedirect()).not.toEqual('/some-url');
         })
@@ -55,7 +55,7 @@ describe('Guard: Authorized Guard Service', () => {
             AuthorizedGuard, LocalStorageService
         ], (guard: AuthorizedGuard, storage: LocalStorageService) => {
             expect(
-                guard.canActivate(<any>{ data: { privileges: ['SOME_ROLE'] } }, <any>{ url: 'some-url' })
+                guard.canActivate(<any>{ data: { privileges: ['SOME_ROLE'] } }, <any>{ url: '/some-url' })
             ).toBe(false);
             expect(routerMock.navigateByUrl).toHaveBeenCalledWith('/user/login');
             expect(storage.getLoginRedirect()).toEqual('/some-url');
@@ -69,7 +69,7 @@ describe('Guard: Authorized Guard Service', () => {
             storage.setToken(createToken(true));
 
             expect(
-                guard.canActivate(<any>{ data: { privileges: ['SOME_ROLE'] } }, <any>{ url: 'some-url' })
+                guard.canActivate(<any>{ data: { privileges: ['SOME_ROLE'] } }, <any>{ url: '/some-url' })
             ).toBe(false);
             expect(routerMock.navigateByUrl).toHaveBeenCalledWith('/user/login');
             expect(storage.getLoginRedirect()).toEqual('/some-url');
@@ -83,7 +83,7 @@ describe('Guard: Authorized Guard Service', () => {
             storage.setToken(createToken(false));
 
             expect(
-                guard.canActivate(<any>{ data: { privileges: ['SOME_ROLE'] } }, <any>{ url: 'some-url' })
+                guard.canActivate(<any>{ data: { privileges: ['SOME_ROLE'] } }, <any>{ url: '/some-url' })
             ).toBe(false);
             expect(routerMock.navigateByUrl).toHaveBeenCalledWith('/');
             expect(storage.getLoginRedirect()).toBe(null);
@@ -97,7 +97,7 @@ describe('Guard: Authorized Guard Service', () => {
             storage.setToken(createToken(false, ['SOME_ROLE']));
 
             expect(
-                guard.canActivate(<any>{ data: { privileges: ['DEV'] } }, <any>{ url: 'some-url' })
+                guard.canActivate(<any>{ data: { privileges: ['DEV'] } }, <any>{ url: '/some-url' })
             ).toBe(false);
             expect(routerMock.navigateByUrl).toHaveBeenCalledWith('/');
             expect(storage.getLoginRedirect()).toBe(null);
@@ -111,7 +111,7 @@ describe('Guard: Authorized Guard Service', () => {
             storage.setToken(createToken(false, ['DEV']));
 
             expect(
-                guard.canActivate(<any>{ data: { privileges: ['DEV'] } }, <any>{ url: 'some-url' })
+                guard.canActivate(<any>{ data: { privileges: ['DEV'] } }, <any>{ url: '/some-url' })
             ).toBe(true);
             expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
             expect(storage.getLoginRedirect()).toBe(null);
@@ -125,7 +125,7 @@ describe('Guard: Authorized Guard Service', () => {
             storage.setToken(createToken(false, ['OTHER_ROLE']));
 
             expect(
-                guard.canActivate(<any>{ data: { privileges: ['OTHER_ROLE'] } }, <any>{ url: 'some-url' })
+                guard.canActivate(<any>{ data: { privileges: ['OTHER_ROLE'] } }, <any>{ url: '/some-url' })
             ).toBe(true);
             expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
             expect(storage.getLoginRedirect()).toBe(null);
@@ -139,7 +139,7 @@ describe('Guard: Authorized Guard Service', () => {
             storage.setToken(createToken(false, ['ADMIN']));
 
             expect(
-                guard.canActivate(<any>{ data: { privileges: ['SOME_ROLE'] } }, <any>{ url: 'some-url' })
+                guard.canActivate(<any>{ data: { privileges: ['SOME_ROLE'] } }, <any>{ url: '/some-url' })
             ).toBe(true);
             expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
             expect(storage.getLoginRedirect()).toBe(null);
@@ -150,7 +150,7 @@ describe('Guard: Authorized Guard Service', () => {
         async(inject([
             AuthorizedGuard, LocalStorageService
         ], (guard: AuthorizedGuard, storage: LocalStorageService) => {
-            expect(guard.canActivateChild(<any>{}, <any>{ url: 'some-url' })).toBe(true);
+            expect(guard.canActivateChild(<any>{}, <any>{ url: '/some-url' })).toBe(true);
             expect(routerMock.navigateByUrl).not.toHaveBeenCalledWith('/user/login');
             expect(storage.getLoginRedirect()).not.toEqual('/some-url');
         })
@@ -160,7 +160,7 @@ describe('Guard: Authorized Guard Service', () => {
         async(inject([
             AuthorizedGuard, LocalStorageService
         ], (guard: AuthorizedGuard, storage: LocalStorageService) => {
-            expect(guard.canActivateChild(<any>{ data: 'some-data' }, <any>{ url: 'some-url' })).toBe(true);
+            expect(guard.canActivateChild(<any>{ data: 'some-data' }, <any>{ url: '/some-url' })).toBe(true);
             expect(routerMock.navigateByUrl).not.toHaveBeenCalledWith('/user/login');
             expect(storage.getLoginRedirect()).not.toEqual('/some-url');
         })
@@ -171,7 +171,7 @@ describe('Guard: Authorized Guard Service', () => {
             AuthorizedGuard, LocalStorageService
         ], (guard: AuthorizedGuard, storage: LocalStorageService) => {
             expect(
-                guard.canActivateChild(<any>{ data: { privileges: ['SOME_ROLE'] } }, <any>{ url: 'some-url' })
+                guard.canActivateChild(<any>{ data: { privileges: ['SOME_ROLE'] } }, <any>{ url: '/some-url' })
         ).toBe(false);
             expect(routerMock.navigateByUrl).toHaveBeenCalledWith('/user/login');
             expect(storage.getLoginRedirect()).toEqual('/some-url');
@@ -185,7 +185,7 @@ describe('Guard: Authorized Guard Service', () => {
             storage.setToken(createToken(true));
 
             expect(
-                guard.canActivateChild(<any>{ data: { privileges: ['SOME_ROLE'] } }, <any>{ url: 'some-url' })
+                guard.canActivateChild(<any>{ data: { privileges: ['SOME_ROLE'] } }, <any>{ url: '/some-url' })
         ).toBe(false);
             expect(routerMock.navigateByUrl).toHaveBeenCalledWith('/user/login');
             expect(storage.getLoginRedirect()).toEqual('/some-url');
@@ -199,7 +199,7 @@ describe('Guard: Authorized Guard Service', () => {
             storage.setToken(createToken(false));
 
             expect(
-                guard.canActivateChild(<any>{ data: { privileges: ['SOME_ROLE'] } }, <any>{ url: 'some-url' })
+                guard.canActivateChild(<any>{ data: { privileges: ['SOME_ROLE'] } }, <any>{ url: '/some-url' })
             ).toBe(false);
             expect(routerMock.navigateByUrl).toHaveBeenCalledWith('/');
             expect(storage.getLoginRedirect()).toBe(null);
@@ -213,7 +213,7 @@ describe('Guard: Authorized Guard Service', () => {
             storage.setToken(createToken(false, ['SOME_ROLE']));
 
             expect(
-                guard.canActivateChild(<any>{ data: { privileges: ['DEV'] } }, <any>{ url: 'some-url' })
+                guard.canActivateChild(<any>{ data: { privileges: ['DEV'] } }, <any>{ url: '/some-url' })
             ).toBe(false);
             expect(routerMock.navigateByUrl).toHaveBeenCalledWith('/');
             expect(storage.getLoginRedirect()).toBe(null);
@@ -227,7 +227,7 @@ describe('Guard: Authorized Guard Service', () => {
             storage.setToken(createToken(false, ['DEV']));
 
             expect(
-                guard.canActivateChild(<any>{ data: { privileges: ['DEV'] } }, <any>{ url: 'some-url' })
+                guard.canActivateChild(<any>{ data: { privileges: ['DEV'] } }, <any>{ url: '/some-url' })
             ).toBe(true);
             expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
             expect(storage.getLoginRedirect()).toBe(null);
@@ -241,7 +241,7 @@ describe('Guard: Authorized Guard Service', () => {
             storage.setToken(createToken(false, ['OTHER_ROLE']));
 
             expect(
-                guard.canActivateChild(<any>{ data: { privileges: ['OTHER_ROLE'] } }, <any>{ url: 'some-url' })
+                guard.canActivateChild(<any>{ data: { privileges: ['OTHER_ROLE'] } }, <any>{ url: '/some-url' })
             ).toBe(true);
             expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
             expect(storage.getLoginRedirect()).toBe(null);
@@ -255,110 +255,8 @@ describe('Guard: Authorized Guard Service', () => {
             storage.setToken(createToken(false, ['ADMIN']));
 
             expect(
-                guard.canActivateChild(<any>{ data: { privileges: ['SOME_ROLE'] } }, <any>{ url: 'some-url' })
+                guard.canActivateChild(<any>{ data: { privileges: ['SOME_ROLE'] } }, <any>{ url: '/some-url' })
             ).toBe(true);
-            expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
-            expect(storage.getLoginRedirect()).toBe(null);
-        })
-    ));
-
-    it('#canLoad should return true if there is no data on route',
-        async(inject([
-            AuthorizedGuard, LocalStorageService
-        ], (guard: AuthorizedGuard, storage: LocalStorageService) => {
-            expect(guard.canLoad(<any>{ path: 'some-url' })).toBe(true);
-            expect(routerMock.navigateByUrl).not.toHaveBeenCalledWith('/user/login');
-            expect(storage.getLoginRedirect()).not.toEqual('/some-url');
-        })
-    ));
-
-    it('#canLoad should return true if there are no privileges on the route data',
-        async(inject([
-            AuthorizedGuard, LocalStorageService
-        ], (guard: AuthorizedGuard, storage: LocalStorageService) => {
-            expect(guard.canLoad(<any>{ data: 'some-data', path: 'some-url' })).toBe(true);
-            expect(routerMock.navigateByUrl).not.toHaveBeenCalledWith('/user/login');
-            expect(storage.getLoginRedirect()).not.toEqual('/some-url');
-        })
-    ));
-
-    it('#canLoad should return false, set redirect url and redirect to login route if no token on storage',
-        async(inject([
-            AuthorizedGuard, LocalStorageService
-        ], (guard: AuthorizedGuard, storage: LocalStorageService) => {
-            expect(guard.canLoad(<any>{ data: { privileges: ['SOME_ROLE'] }, path: 'some-url' })).toBe(false);
-            expect(routerMock.navigateByUrl).toHaveBeenCalledWith('/user/login');
-            expect(storage.getLoginRedirect()).toEqual('/some-url');
-        })
-    ));
-
-    it('#canLoad should return false, set redirect url and redirect to login route if token on storage is expired',
-        async(inject([
-            AuthorizedGuard, LocalStorageService
-        ], (guard: AuthorizedGuard, storage: LocalStorageService) => {
-            storage.setToken(createToken(true));
-
-            expect(guard.canLoad(<any>{ data: { privileges: ['SOME_ROLE'] }, path: 'some-url' })).toBe(false);
-            expect(routerMock.navigateByUrl).toHaveBeenCalledWith('/user/login');
-            expect(storage.getLoginRedirect()).toEqual('/some-url');
-        })
-    ));
-
-    it('#canLoad should return false, and redirect to login route if not have access',
-        async(inject([
-            AuthorizedGuard, LocalStorageService
-        ], (guard: AuthorizedGuard, storage: LocalStorageService) => {
-            storage.setToken(createToken(false));
-
-            expect(guard.canLoad(<any>{ data: { privileges: ['SOME_ROLE'], path: 'some-url' }})).toBe(false);
-            expect(routerMock.navigateByUrl).toHaveBeenCalledWith('/');
-            expect(storage.getLoginRedirect()).toBe(null);
-        })
-    ));
-
-    it("#canLoad should return false if route requires 'DEV' role but user does not have it",
-        async(inject([
-            AuthorizedGuard, LocalStorageService
-        ], (guard: AuthorizedGuard, storage: LocalStorageService) => {
-            storage.setToken(createToken(false, ['SOME_ROLE']));
-
-            expect(guard.canLoad(<any>{ data: { privileges: ['DEV'] }, path: 'some-url' })).toBe(false);
-            expect(routerMock.navigateByUrl).toHaveBeenCalledWith('/');
-            expect(storage.getLoginRedirect()).toBe(null);
-        })
-    ));
-
-    it("#canLoad should return true if route requires 'DEV' role and user has it",
-        async(inject([
-            AuthorizedGuard, LocalStorageService
-        ], (guard: AuthorizedGuard, storage: LocalStorageService) => {
-            storage.setToken(createToken(false, ['DEV']));
-
-            expect(guard.canLoad(<any>{ data: { privileges: ['DEV'] }, path: 'some-url' })).toBe(true);
-            expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
-            expect(storage.getLoginRedirect()).toBe(null);
-        })
-    ));
-
-    it("#canLoad should return true if route requires 'OTHER_ROLE' role and user has it",
-        async(inject([
-            AuthorizedGuard, LocalStorageService
-        ], (guard: AuthorizedGuard, storage: LocalStorageService) => {
-            storage.setToken(createToken(false, ['OTHER_ROLE']));
-
-            expect(guard.canLoad(<any>{ data: { privileges: ['OTHER_ROLE'] }, path: 'some-url' })).toBe(true);
-            expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
-            expect(storage.getLoginRedirect()).toBe(null);
-        })
-    ));
-
-    it("#canLoad should return true if user has 'ADMIN' role",
-        async(inject([
-            AuthorizedGuard, LocalStorageService
-        ], (guard: AuthorizedGuard, storage: LocalStorageService) => {
-            storage.setToken(createToken(false, ['ADMIN']));
-
-            expect(guard.canLoad(<any>{ data: { privileges: ['SOME_ROLE'] }, path: 'some-url' })).toBe(true);
             expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
             expect(storage.getLoginRedirect()).toBe(null);
         })

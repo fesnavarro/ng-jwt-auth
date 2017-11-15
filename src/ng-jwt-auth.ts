@@ -8,3 +8,4 @@ export { AuthenticatedGuard } from './guards/authenticated.guard';
 export { AuthorizedGuard } from './guards/authorized.guard';
 export { HearbeatGuard } from './guards/heartbeat.guard';
 export { AnonymousGuard } from './guards/anonymous.guard';
+export { AuthInterceptor } from './http/auth-interceptor';

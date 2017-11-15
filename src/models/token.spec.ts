@@ -1,7 +1,7 @@
 import { IRawToken } from './raw-token.interface';
 import { Token } from './token';
 import { User } from './user';
-import { rawToken, jwtRawToken, jwtTokenString } from './mocks';
+import { dateToTimestamp, rawToken, jwtRawToken, jwtTokenString } from './mocks';
 
 describe('Model: Token', () => {
     let token: Token;
@@ -19,15 +19,15 @@ describe('Model: Token', () => {
     });
 
     it('issued should return ISO with correct date', () => {
-        expect(token.issuedAt.valueOf()).toEqual(jwtRawToken.iat);
+        expect(dateToTimestamp(token.issuedAt)).toEqual(jwtRawToken.iat);
     });
 
     it('notBeforeDate should return with correct date', () => {
-        expect(token.notBefore.valueOf()).toEqual(jwtRawToken.nbf);
+        expect(dateToTimestamp(token.notBefore)).toEqual(jwtRawToken.nbf);
     });
 
     it('expiry should return ISO with correct date', () => {
-        expect(token.expiry.valueOf()).toEqual(jwtRawToken.exp);
+        expect(dateToTimestamp(token.expiry)).toEqual(jwtRawToken.exp);
     });
 
     it("id should return 'Some JWT ID'", () => {

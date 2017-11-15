@@ -5,8 +5,7 @@ import {
     ActivatedRouteSnapshot,
     RouterStateSnapshot,
     CanActivate,
-    CanActivateChild,
-    CanLoad
+    CanActivateChild
 } from '@angular/router';
 
 import { LocalStorageService } from '../storage/local-storage.service';
@@ -27,7 +26,7 @@ import { IToken } from '../models/token.interface';
  *  }];
  */
 @Injectable()
-export class AuthenticatedGuard implements CanActivate, CanActivateChild, CanLoad {
+export class AuthenticatedGuard implements CanActivate, CanActivateChild {
     private _redirectUrl: string;
 
     constructor(
@@ -39,15 +38,11 @@ export class AuthenticatedGuard implements CanActivate, CanActivateChild, CanLoa
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-        return this._checkLogin(`/${state.url}`);
+        return this._checkLogin(state.url);
     }
 
     canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         return this.canActivate(route, state);
-    }
-
-    canLoad(route: Route): boolean {
-        return this._checkLogin(`/${route.path}`);
     }
 
     private _checkLogin(url: string): boolean {

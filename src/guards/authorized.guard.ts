@@ -5,8 +5,7 @@ import {
     ActivatedRouteSnapshot,
     RouterStateSnapshot,
     CanActivate,
-    CanActivateChild,
-    CanLoad
+    CanActivateChild
 } from '@angular/router';
 
 import { LocalStorageService } from '../storage/local-storage.service';
@@ -28,7 +27,7 @@ import { IUser } from '../models/user.interface';
  *  }];
  */
 @Injectable()
-export class AuthorizedGuard implements CanActivate, CanActivateChild, CanLoad {
+export class AuthorizedGuard implements CanActivate, CanActivateChild {
     private _redirectUrl: string;
 
     constructor(
@@ -44,19 +43,11 @@ export class AuthorizedGuard implements CanActivate, CanActivateChild, CanLoad {
             return true;
         }
 
-        return this._checkPrivileges(route.data['privileges'] as string[], `/${state.url}`);
+        return this._checkPrivileges(route.data['privileges'] as string[], state.url);
     }
 
     canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         return this.canActivate(route, state);
-    }
-
-    canLoad(route: Route): boolean {
-        if (!route.data || !route.data['privileges']) {
-            return true;
-        }
-
-        return this._checkPrivileges(route.data['privileges'] as string[], `/${route.path}`);
     }
 
     private _checkPrivileges(privileges: string[], url: string): boolean {

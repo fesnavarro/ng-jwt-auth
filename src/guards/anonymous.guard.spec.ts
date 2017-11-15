@@ -65,26 +65,4 @@ describe('Guard: Anonymous Guard Service', () => {
             expect(guard.canActivateChild(<any>{}, <any>{})).toBe(true);
         })
     );
-
-    it('#canLoad should return false if there is a valid token on storage',
-        inject([AnonymousGuard, LocalStorageService], (guard: AnonymousGuard, storage: LocalStorageService) => {
-            storage.setToken(createToken(false));
-
-            expect(guard.canLoad(<any>{})).toBe(false);
-        })
-    );
-
-    it('#canLoad should return false if there is an expired token on storage',
-        inject([AnonymousGuard, LocalStorageService], (guard: AnonymousGuard, storage: LocalStorageService) => {
-            storage.setToken(createToken(true));
-
-            expect(guard.canLoad(<any>{})).toBe(true);
-        })
-    );
-
-    it('#canLoad should return true if there is no token on storage',
-        inject([AnonymousGuard, LocalStorageService], (guard: AnonymousGuard, storage: LocalStorageService) => {
-            expect(guard.canLoad(<any>{})).toBe(true);
-        })
-    );
 });

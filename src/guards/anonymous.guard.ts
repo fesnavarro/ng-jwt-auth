@@ -4,8 +4,7 @@ import {
     ActivatedRouteSnapshot,
     RouterStateSnapshot,
     CanActivate,
-    CanActivateChild,
-    CanLoad
+    CanActivateChild
 } from '@angular/router';
 
 import { LocalStorageService } from '../storage/local-storage.service';
@@ -25,7 +24,7 @@ import { IToken } from '../models/token.interface';
  *  }];
  */
 @Injectable()
-export class AnonymousGuard implements CanActivate, CanActivateChild, CanLoad {
+export class AnonymousGuard implements CanActivate, CanActivateChild {
     constructor(private _storage: LocalStorageService) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
@@ -34,10 +33,6 @@ export class AnonymousGuard implements CanActivate, CanActivateChild, CanLoad {
 
     canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         return this.canActivate(route, state);
-    }
-
-    canLoad(route: Route): boolean {
-        return this._shouldAllowRoute();
     }
 
     private _shouldAllowRoute(): boolean {
