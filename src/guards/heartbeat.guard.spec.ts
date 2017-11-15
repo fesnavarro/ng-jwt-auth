@@ -187,18 +187,20 @@ describe('Guard: Hearbeat Guard Service', () => {
                 tokenPayload = createAuthHeaderWithPayload(createJwtRawToken(tmpRawToken));
 
                 try {
-                backend.expectOne('/ping').flush({
-                    some: 'body'
-                }, {
-                    headers: new HttpHeaders().set('Authorization', tokenPayload)
-                });
-            } catch (err) {
-                console.log('backend made a boo boo', err);
-            }
+                    backend.expectOne('/ping').flush({
+                        some: 'body'
+                    }, {
+                        headers: new HttpHeaders().set('Authorization', tokenPayload)
+                    });
+                } catch (err) {
+                    console.log('backend made a boo boo', err);
+                }
 
-                let newToken : IToken | null  = storage.getToken();
+                let newToken: IToken | null = storage.getToken();
                 expect(newToken instanceof Token).toBe(true);
-                newToken && expect(newToken.issuedAt.valueOf()).toEqual(new Date('2010-10-01T09:10:29+00:00').valueOf());
+                if (newToken) {
+                    expect(newToken.issuedAt.valueOf()).toEqual(new Date('2010-10-01T09:10:29+00:00').valueOf());
+                }
             }
         ))
     );

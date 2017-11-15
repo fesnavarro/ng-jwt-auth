@@ -5,7 +5,7 @@ import { IRawToken } from './raw-token.interface';
 import { Token } from './token';
 
 export function dateToTimestamp(date: Date): number {
-    return parseInt(date.getTime().toString().substr(0, 10))
+    return parseInt(date.getTime().toString().substr(0, 10));
 }
 
 export function createJwtRawToken(_rawToken: IRawToken): any {
