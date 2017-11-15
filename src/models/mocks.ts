@@ -4,12 +4,16 @@ import { Base64 } from '../helpers/base64';
 import { IRawToken } from './raw-token.interface';
 import { Token } from './token';
 
+export function dateToTimestamp(date: Date): number {
+    return parseInt(date.getTime().toString().substr(0, 10))
+}
+
 export function createJwtRawToken(_rawToken: IRawToken): any {
     let token: any = Object.assign({}, _rawToken);
 
-    token.iat = _rawToken.iat.getTime();
-    token.nbf = _rawToken.nbf.getTime();
-    token.exp = _rawToken.exp.getTime();
+    token.iat = dateToTimestamp(_rawToken.iat);
+    token.nbf = dateToTimestamp(_rawToken.nbf);
+    token.exp = dateToTimestamp(_rawToken.exp);
 
     return token;
 }
@@ -35,7 +39,7 @@ export const jwtRawToken = createJwtRawToken(rawToken);
 export const jwtTokenString = createAuthHeaderWithPayload(jwtRawToken);
 export const testToken = Token.create(rawToken, createAuthHeaderWithPayload(jwtRawToken));
 
-export function createToken(isExpired = false, roles: string[] = null): Token {
+export function createToken(isExpired = false, roles: string[] = []): Token {
     let token: any = Object.assign({}, rawToken);
 
     let thisYear: number = (new Date()).getFullYear();

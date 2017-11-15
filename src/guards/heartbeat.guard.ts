@@ -6,8 +6,7 @@ import {
     ActivatedRouteSnapshot,
     RouterStateSnapshot,
     CanActivate,
-    CanActivateChild,
-    CanLoad
+    CanActivateChild
 } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
@@ -30,7 +29,7 @@ import { Jwt } from '../helpers/jwt';
  *  }];
   */
 @Injectable()
-export class HearbeatGuard implements CanActivate, CanActivateChild, CanLoad {
+export class HearbeatGuard implements CanActivate, CanActivateChild {
     private _heartbeatUrl: string;
     private _redirectUrl: string;
 
@@ -45,17 +44,12 @@ export class HearbeatGuard implements CanActivate, CanActivateChild, CanLoad {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-        this._beat(`/${state.url}`);
+        this._beat(state.url);
         return true;
     }
 
     canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         this.canActivate(route, state);
-        return true;
-    }
-
-    canLoad(route: Route): boolean {
-        this._beat(`/${route.path}`);
         return true;
     }
 

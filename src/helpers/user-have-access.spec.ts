@@ -25,7 +25,7 @@ describe('Helper: userHaveAccess', () => {
 
     it('should return false when no roles available', () => {
         rawToken = new RawToken();
-        rawToken.roles = undefined;
+        rawToken.roles = [];
         user = User.createFromParsedToken(rawToken);
 
         expect(userHaveAccess(user, ['role1'])).toEqual(false);
