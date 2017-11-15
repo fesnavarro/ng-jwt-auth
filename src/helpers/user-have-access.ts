@@ -4,6 +4,10 @@ export default function userHaveAccess(user: IUser, roles: string[]): boolean {
     let devFeature = false;
     let foundRole = '';
 
+    if (!roles) {
+        return true;
+    }
+
     roles.forEach((role: string) => {
         if ('DEV' == role) {
             devFeature = true;
