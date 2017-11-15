@@ -39,7 +39,7 @@ export class AuthInterceptor implements HttpInterceptor {
             tmpReq = req.clone({headers: headers});
         }
 
-        return next.handle(tmpReq).do((event: HttpEvent<any>) => {
+        return next.handle(tmpReq).do(event => {
             if (event instanceof HttpResponse) {
                 if (event.headers.has('Authorization')) {
                     let tmpRawToken: string | null = event.headers.get('Authorization');
@@ -56,7 +56,7 @@ export class AuthInterceptor implements HttpInterceptor {
                     } catch (exc) {}
                 }
             }
-        }, (err) => {
+        }, err => {
             if (err instanceof HttpErrorResponse) {
                 if (401 == err.status && '' != this._redirectUrl) {
                     this._router.navigateByUrl(this._redirectUrl);
