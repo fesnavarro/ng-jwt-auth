@@ -34,6 +34,6 @@ export class Jwt {
     }
 
     private static _createTokenDate(utcSeconds: number): Date {
-        return moment.utc(utcSeconds).toDate();
+        return moment.utc(utcSeconds, 'X').toDate();
     }
 }
