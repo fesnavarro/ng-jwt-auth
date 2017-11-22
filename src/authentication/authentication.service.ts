@@ -68,6 +68,14 @@ export class AuthenticationService {
         return false;
     }
 
+    public isExpired(): boolean {
+        let token: IToken | null = this._storage.getToken();
+        if (token && token.isExpired()) {
+            return true;
+        }
+        return false;
+    }
+
     public getUser(): IUser | null {
         let token: IToken | null = this._storage.getToken();
         if (!token || token.isExpired()) {

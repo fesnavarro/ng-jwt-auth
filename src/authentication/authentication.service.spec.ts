@@ -152,6 +152,33 @@ describe('Authentication: Authentication Service', () => {
         })
     );
 
+    it('#isExpired to return true when have token and is expired',
+        inject([
+            AuthenticationService, LocalStorageService
+        ], (authService: AuthenticationService, storage: LocalStorageService) => {
+            storage.setToken(createToken(true));
+            expect(authService.isExpired()).toBe(true);
+        })
+    );
+
+    it('#isExpired to return false when have no token',
+        inject([
+            AuthenticationService, LocalStorageService
+        ], (authService: AuthenticationService, storage: LocalStorageService) => {
+            storage.clearToken();
+            expect(authService.isExpired()).toBe(false);
+        })
+    );
+
+    it('#isExpired to return false when token is not expired',
+        inject([
+            AuthenticationService, LocalStorageService
+        ], (authService: AuthenticationService, storage: LocalStorageService) => {
+            storage.setToken(createToken(false));
+            expect(authService.isExpired()).toBe(false);
+        })
+    );
+
     it('#getUser returns null when no token on storage',
         inject([
             AuthenticationService, LocalStorageService
@@ -176,7 +203,9 @@ describe('Authentication: Authentication Service', () => {
             storage.setToken(createToken(false));
             let user = authService.getUser();
             expect(user instanceof User).toBe(true);
-            expect(user.name).toEqual('Some Users Name');
+            if (user) {
+                expect(user.name).toEqual('Some Users Name');
+            }
         })
     );
 
